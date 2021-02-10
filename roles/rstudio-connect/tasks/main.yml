@@ -1,0 +1,41 @@
+---
+- name: Install packages required for RStudio Connect
+  yum:
+    name:
+      - make
+      - gcc
+      - gcc-c++
+      - libcurl-devel
+      - libxml2-devel
+      - openssl
+      - openssl-devel
+      - texlive-*
+      - libev-devel
+    state: present
+
+- name: Install EPEL repo
+  yum:
+    # yamllint disable-line rule:line-length
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+    disable_gpg_check: "yes"
+
+- name: Install libsodium
+  yum:
+    name: libsodium*
+    state: present
+    update_cache: "yes"
+
+- name: Upgrade setuptools and virtualenv
+  pip:
+    name:
+      - setuptools
+      - virtualenv
+    executable: pip3
+
+- name: Install RStudio Connect
+  yum:
+    # yamllint disable-line rule:line-length
+    name: https://cdn.rstudio.com/connect/{{ rstudio_connect_version | regex_replace('.[^\.]*$', '') }}/rstudio-connect-{{ rstudio_connect_version }}.el8.x86_64.rpm
+    state: present
+    disable_gpg_check: "yes"

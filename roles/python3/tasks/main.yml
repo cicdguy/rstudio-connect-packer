@@ -1,0 +1,10 @@
+---
+- name: Install Python3 and dependencies
+  yum:
+    name:
+      - python3
+      - python3-setuptools
+      - python3-wheel
+      - python3-devel
+      - python3-pip
+    state: present

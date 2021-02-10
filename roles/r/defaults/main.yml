@@ -1,0 +1,6 @@
+---
+r_versions: 4.0.3
+r_installation_prefix: /opt/R/{{ r_version }}
+r_download_dir: /tmp/
+# yamllint disable-line rule:line-length
+r_installation_options: --with-readline --enable-R-shlib --with-x --with-libpng --with-jpeglib --with-cairo --with-libtiff --with-tcltk=/usr/local/lib --enable-memory-profiling --with-system-valgrind-headers --enable-R-profiling --with-blas --with-lapack --enable-BLAS-shlib

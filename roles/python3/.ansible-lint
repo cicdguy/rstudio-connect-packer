@@ -1,0 +1,6 @@
+warn_list:
+  - '701'  # meta/main.yml should contain relevant info
+parseable: true
+quiet: false
+use_default_rules: true
+verbosity: 1

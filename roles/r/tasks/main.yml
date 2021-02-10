@@ -1,0 +1,103 @@
+---
+- name: Install essential dependencies
+  yum:
+    name:
+      - tar
+      - unzip
+      - gzip
+      - make
+      - gcc
+      - gcc-c++
+      - gcc-gfortran
+      - libcurl-devel
+      - libxml2-devel
+      - openssl-devel
+      - texlive-*
+      - libev-devel
+      - bzip2
+      - bzip2-devel
+      - bzip2-libs
+      - cairo
+      - cairo-devel
+      - fontconfig
+      - freetype
+      - fribidi
+      - glib2
+      - harfbuzz
+      - libXext
+      - libXt
+      - libcurl
+      - libicu
+      - libicu-devel
+      - libjpeg*
+      - libpng
+      - libpng-devel
+      - libtiff
+      - libtiff-devel
+      - libtirpc
+      - libgcrypt
+      - ncurses
+      - pango
+      - pkgconfig
+      - pcre2
+      - pcre2-devel
+      - readline
+      - readline-devel
+      - tcl
+      - tcl-devel
+      - tk
+      - tk-devel
+      - xz
+      - zlib
+      - zlib-devel
+      - blas
+      - blas64
+      - java-11-openjdk
+      - libuv
+      - libX11
+      - libX11-common
+      - libX11-devel
+      - xorg-x11-*
+      - libXt
+      - libXt-devel
+      - which
+      - texlive
+      - texlive-latex-fonts
+      - firefox
+      - bison
+      - libgfortran
+      - valgrind
+      - valgrind-devel
+      - openblas-threads
+      - zip
+      - wget
+      - vim
+    state: present
+
+- name: Download and extract R v{{ r_version }} source
+  unarchive:
+    # yamllint disable-line rule:line-length
+    src: https://cran.r-project.org/src/base/R-{{ r_version.split(".")[0] }}/R-{{ r_version }}.tar.gz
+    dest: "{{ r_download_dir }}"
+    remote_src: "yes"
+
+- name: Run "configure"
+  # yamllint disable-line rule:line-length
+  shell: "./configure --prefix={{ r_installation_prefix }} {{ r_installation_options }}"
+  args:
+    chdir: "{{ r_download_dir }}/R-{{ r_version }}"
+
+- name: Run "make"
+  shell: make -j8
+  args:
+    chdir: "{{ r_download_dir }}/R-{{ r_version }}"
+
+- name: Run "make install"
+  shell: make install
+  args:
+    chdir: "{{ r_download_dir }}/R-{{ r_version }}"
+
+- name: Clean source directory
+  file:
+    state: absent
+    path: "{{ r_download_dir }}/R-{{ r_version }}"

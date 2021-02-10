@@ -1,0 +1,7 @@
+warn_list:
+  - '403'  # Package installs should not use latest
+  - '701'  # meta/main.yml should contain relevant info
+parseable: true
+quiet: false
+use_default_rules: true
+verbosity: 1

@@ -1,0 +1,8 @@
+warn_list:
+  - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern
+  - '204'  # Lines should be no longer than 160 chars
+  - '701'  # meta/main.yml should contain relevant info
+parseable: true
+quiet: false
+use_default_rules: true
+verbosity: 1

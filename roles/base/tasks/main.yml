@@ -1,0 +1,67 @@
+---
+- name: Update Cache
+  yum:
+    name: '*'
+    update_cache: "yes"
+    state: latest
+
+- name: Apply security updates
+  yum:
+    name: '*'
+    security: "yes"
+    state: latest
+
+- name: Apply bugfixes
+  yum:
+    name: '*'
+    bugfix: "yes"
+    state: latest
+
+- name: Install essentials
+  yum:
+    name:
+      - crontabs
+      - logrotate
+      - git
+      - python2
+    state: present
+
+- name: Cronjob for security and bugfix autopatcher
+  cron:
+    name: Security and bugfix autopatcher
+    weekday: "1"
+    minute: "2"
+    hour: "3"
+    user: root
+    job: "YUMINTERACTIVE=0 yum update -y --security --bugfix"
+    cron_file: yum-security-bugfix
+
+- name: Cronjob for upgrading all packages
+  cron:
+    name: Upgrades for all packages
+    weekday: "2"
+    minute: "3"
+    hour: "4"
+    user: root
+    job: "YUMINTERACTIVE=0 yum upgrade -y"
+    cron_file: yum-autoupgrader
+
+- name: Cronjob for updating all packages
+  cron:
+    name: Updates for all packages
+    weekday: "3"
+    minute: "4"
+    hour: "5"
+    user: root
+    job: "YUMINTERACTIVE=0 yum update -y"
+    cron_file: yum-autoupdater
+
+- name: Cronjob to remove older kernels
+  cron:
+    name: Remove older kernels
+    weekday: "5"
+    minute: "6"
+    hour: "7"
+    user: root
+    job: "package-cleanup --oldkernels --count=1 -y"
+    cron_file: yum-rm-old-kernels
